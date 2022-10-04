@@ -1,0 +1,266 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Tests\\Faster.Ioc.Tests.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Faster.Ioc.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Faster.Ioc.csproj",
+        "projectName": "Faster.Ioc",
+        "projectPath": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Faster.Ioc.csproj",
+        "packagesPath": "C:\\Users\\bc2scd03\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\obj\\",
+        "projectStyle": "PackageReference",
+        "crossTargeting": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\bc2scd03\\source\\repos\\NuGet.Config",
+          "C:\\Users\\bc2scd03\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net461",
+          "net472",
+          "net48",
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "\\\\sblc2sc602\\Software$\\NuGet": {},
+          "http://qar40160.mod.nl:8081/repository/nuget-v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/LandgebondenIT@Release/nuget/v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/TestAutomation/nuget/v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/UI@Stable/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          },
+          "net461": {
+            "targetAlias": "net461",
+            "projectReferences": {}
+          },
+          "net472": {
+            "targetAlias": "net472",
+            "projectReferences": {}
+          },
+          "net48": {
+            "targetAlias": "net48",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "FastExpressionCompiler": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "FastExpressionCompiler.LightExpression": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Faster.Map": {
+              "target": "Package",
+              "version": "[3.0.3.4, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        },
+        "net461": {
+          "targetAlias": "net461",
+          "dependencies": {
+            "FastExpressionCompiler": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "FastExpressionCompiler.LightExpression": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Faster.Map": {
+              "target": "Package",
+              "version": "[3.0.3.4, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        },
+        "net472": {
+          "targetAlias": "net472",
+          "dependencies": {
+            "FastExpressionCompiler": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "FastExpressionCompiler.LightExpression": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Faster.Map": {
+              "target": "Package",
+              "version": "[3.0.3.4, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        },
+        "net48": {
+          "targetAlias": "net48",
+          "dependencies": {
+            "FastExpressionCompiler": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "FastExpressionCompiler.LightExpression": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Faster.Map": {
+              "target": "Package",
+              "version": "[3.0.3.4, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Tests\\Faster.Ioc.Tests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Tests\\Faster.Ioc.Tests.csproj",
+        "projectName": "Faster.Ioc.Tests",
+        "projectPath": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Tests\\Faster.Ioc.Tests.csproj",
+        "packagesPath": "C:\\Users\\bc2scd03\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Tests\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\bc2scd03\\source\\repos\\NuGet.Config",
+          "C:\\Users\\bc2scd03\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "\\\\sblc2sc602\\Software$\\NuGet": {},
+          "http://qar40160.mod.nl:8081/repository/nuget-v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/LandgebondenIT@Release/nuget/v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/TestAutomation/nuget/v3/index.json": {},
+          "http://sblsats181.dblc2sc.mindef.nl/C2SC/_packaging/UI@Stable/nuget/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Faster.Ioc.csproj": {
+                "projectPath": "C:\\Users\\bc2scd03\\source\\repos\\Faster\\Faster.Ioc\\Faster.Ioc.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Faster.Map": {
+              "target": "Package",
+              "version": "[3.0.3.4, )"
+            },
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.2.3, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.3, )"
+            },
+            "Microsoft.Extensions.DependencyInjection": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.9.4, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.0.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

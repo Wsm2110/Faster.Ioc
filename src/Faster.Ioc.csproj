@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net461;net48;net472;net5.0</TargetFrameworks>
+		<LangVersion>Latest</LangVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Faster.Map" Version="3.0.3.4" />
+		<PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Collections\" />
+	</ItemGroup>
+
+</Project>
