@@ -155,4 +155,8 @@ public class Farm
       Assert.IsTrue(instance == instance2);
       }
 ```
+## Disposable
+
+The lifetime of objects implementing IDisposable interface is something to keep in mind. The Container will keep track of all objects implementing IDisposable (Singletons and transient). By default Faster.Map will dispose all objects at shutdown or when .Dispose() is called. This is also when the memory is released by the garbage collector, all references stored in the Container will be gone. If this is troublesome you can either use a Scoped lifetimes or a ChildContainer
+
 
