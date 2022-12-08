@@ -1,13 +1,15 @@
 using System;
+//using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Faster.Ioc.Contracts;
 using Expression = FastExpressionCompiler.LightExpression.Expression;
 
 namespace Faster.Ioc
 {
     [System.Diagnostics.DebuggerDisplay("RegisteredType:{RegisteredType.Name}")]
-    public class Registration
+    public class Registration: ICloneable
     {
         #region Properties
 
@@ -36,7 +38,7 @@ namespace Faster.Ioc
         /// The type of the return.
         /// </value>
         public Type ReturnType { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the hashcode.
         /// </summary>
@@ -133,7 +135,7 @@ namespace Faster.Ioc
         #endregion
 
         [MethodImpl(256)]
-        public void TargetConstructorWithLargestParamCount()
+        private void TargetConstructorWithLargestParamCount()
         {
             byte paramCount = 0;
             foreach (var constructor in ReturnType.GetConstructors())
@@ -150,6 +152,11 @@ namespace Faster.Ioc
             {
                 throw new InvalidOperationException($"No public constructors found of type {ReturnType}");
             }
+        }
+
+        public object Clone()
+        {
+            return new Registration(RegisteredType, ReturnType, Lifetime);
         }
     }
 }

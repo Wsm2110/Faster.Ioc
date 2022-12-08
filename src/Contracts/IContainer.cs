@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FastExpressionCompiler.LightExpression;
 using Microsoft.Extensions.DependencyInjection;
 
 
@@ -10,7 +9,7 @@ namespace Faster.Ioc.Contracts
     /// 
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public interface IContainer
+    public interface IContainer: IDisposable
     {
         /// <summary>
         /// Registers the specified interface.
@@ -168,19 +167,6 @@ namespace Faster.Ioc.Contracts
         object Resolve(Type serviceType, IScoped scoped);
 
         /// <summary>
-        /// Resolves all registered concrete classes
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        IEnumerable<object> ResolveAll<T>();
-
-        /// <summary>
-        /// Resolves all registered concrete classes
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<object> ResolveAll(Type type);
-
-        /// <summary>
         /// Registers the specified object by using overrides, overrides should have a default constructor
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -223,5 +209,6 @@ namespace Faster.Ioc.Contracts
         /// </summary>
         /// <returns></returns>
         IServiceScope CreateScope();
+   
     }
 }

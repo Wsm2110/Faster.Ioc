@@ -1,9 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net461;net48;net472;net5.0</TargetFrameworks>
+		<TargetFrameworks>net48;net472;net5.0;net6.0</TargetFrameworks>
 		<LangVersion>Latest</LangVersion>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Authors>Wiljan Ruizendaal</Authors>
+		<PackageReleaseNotes>minor performance changes</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/Wsm2110/Faster.Ioc</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AssemblyVersion>1.0.0.3</AssemblyVersion>
+		<FileVersion>1.0.0.3</FileVersion>
+		<Title>Minimalistic ioc container with incredible speed</Title>
+		<Version>1.0.0.3</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -11,14 +19,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Faster.Map" Version="3.0.3.4" />
-		<PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
-		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Collections\" />
+		<PackageReference Include="Faster.Map" Version="3.0.3.8" />
+		<PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
+		<PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
 	</ItemGroup>
 
 </Project>

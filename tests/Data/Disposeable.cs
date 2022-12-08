@@ -6,7 +6,7 @@ namespace Faster.Ioc.Tests.Data
     /// 
     /// </summary>
     /// <seealso cref="System.IDisposable" />
-    public sealed class DisposeableOne : IDisposeableOne, IDisposable
+    public class DisposeableOne : IDisposeableOne, IDisposable
     {
         private bool _disposed;
 
@@ -31,7 +31,32 @@ namespace Faster.Ioc.Tests.Data
         }
     }
 
-    public sealed class DisposeableTwo : IDisposeableTwo, IDisposable
+    public class DisposeableTwo : IDisposeableTwo, IDisposable
+    {
+        private bool _disposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    //
+                }
+
+                _disposed = true;
+            }
+        }
+
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+        }
+    }
+
+    public class DisposaebleThree : IDisposeableThree, IDisposable
     {
         private bool _disposed;
 
@@ -56,31 +81,38 @@ namespace Faster.Ioc.Tests.Data
         }
     }
 
-    public sealed class DisposaebleThree : IDisposeableThree, IDisposable
+    public class DisposeableFour : IDisposable
     {
-        private bool _disposed;
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    //
-                }
-
-                _disposed = true;
-            }
-        }
-
+        public bool Disposed { get; set; }
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
+            Dispose(true);
+        }
+
+        protected void Dispose(bool disposing)
+        {
+            Disposed = true;
         }
     }
     
+    public sealed class DisposeableChild : DisposeableTwo
+    {
+
+        public bool Disposed { get; set; }
+
+        protected override void Dispose(bool disposing)
+        {
+            Disposed = true;
+            base.Dispose(disposing);
+        }
+    }
+
+    public sealed class Child : DisposeableFour
+    {
+    }
+
+
 
     public interface IDisposeableOne
     {

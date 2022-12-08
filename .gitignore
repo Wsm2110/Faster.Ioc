@@ -5,4 +5,7 @@
 /.vs
 /src/bin
 /src/obj
-/tests/bin/Debug/net5.0
+/tests/bin/
+/tests/obj
+.gitignore
+

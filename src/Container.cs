@@ -5,8 +5,9 @@ using System.Runtime.CompilerServices;
 using Faster.Ioc.Collections;
 using Faster.Ioc.Contracts;
 using Faster.Ioc.Extensions;
+using Faster.Map;
 using Microsoft.Extensions.DependencyInjection;
-using static FastExpressionCompiler.LightExpression.Expression;
+using FastExpressionCompiler.LightExpression;
 
 namespace Faster.Ioc
 {
@@ -14,13 +15,15 @@ namespace Faster.Ioc
     /// Minimalistic ioc container with incredible speed 
     /// </summary>
     /// <seealso cref="IContainer" />
-    public sealed class Container : IContainer, IDisposable
+    public sealed class Container : IContainer
     {
         #region Fields
 
-        private MultiMap<Type, Registration> _registrations = new MultiMap<Type, Registration>(128, 0.5);
-        private readonly DependencyResolver _dependencyResolver;
+        private MultiMap<Type, Registration> _registrations = new MultiMap<Type, Registration>(64);
 
+        private readonly FastMap<int, Func<Scoped, object>> _keyCache = new FastMap<int, Func<Scoped, object>>();
+        private readonly ExpressionGenerator _generator;
+        private readonly HashMap _delegates;
         private bool _disposed;
 
         #endregion
@@ -38,10 +41,11 @@ namespace Faster.Ioc
         /// </summary>
         public Container()
         {
-            _dependencyResolver = new DependencyResolver(_registrations);
+            _generator = new ExpressionGenerator(_registrations);
+            _delegates = new HashMap(64, 0.5, _generator);
             ContainerScope = new Scoped(this);
         }
-
+ 
         #endregion
 
         #region Registration Methods
@@ -54,7 +58,7 @@ namespace Faster.Ioc
         {
             var containerRegistration = new Registration(typeof(IContainer), typeof(Container), Lifetime.Singleton)
             {
-                Expression = Constant(this)
+                Expression = Expression.Constant(this)
             };
 
             _registrations.Emplace(typeof(IContainer), containerRegistration);
@@ -302,7 +306,7 @@ namespace Faster.Ioc
             {
                 OverrideExpression = overrideExp
             };
-            
+
             _registrations.Emplace(registration.RegisteredType, registration);
         }
 
@@ -372,7 +376,7 @@ namespace Faster.Ioc
         [MethodImpl(256)]
         public object Resolve(Type serviceType, IScoped scoped)
         {
-            return _dependencyResolver.DelegateCache.Get(serviceType)((Scoped)scoped);
+            return _delegates.Get(serviceType)((Scoped)scoped);
         }
 
         /// <summary>
@@ -381,14 +385,14 @@ namespace Faster.Ioc
         /// <typeparam name="T">RegisteredType type</typeparam>
         /// <returns>Object implementing the interface</returns>
         [MethodImpl(256)]
-        public T Resolve<T>() => (T)_dependencyResolver.DelegateCache.Get(typeof(T))(ContainerScope);
+        public T Resolve<T>() => (T)_delegates.Get(typeof(T))(ContainerScope);
 
         /// <summary>
         /// Returns an implementation of the specified interface
         /// </summary>
         /// <returns>Object implementing the interface</returns>
-        [MethodImpl(256)]
-        public object Resolve(Type type) => _dependencyResolver.DelegateCache.Get(type)(ContainerScope);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public object Resolve(Type type) => _delegates.Get(type)(ContainerScope);
 
         /// <summary>
         /// Resolves a specific entry by the specified key.
@@ -398,40 +402,26 @@ namespace Faster.Ioc
         [MethodImpl(256)]
         public object Resolve(string key)
         {
-            var result = _dependencyResolver.KeyCache.Get(key.GetHashCode());
-            if (result != null)
+            var hashcode = key.GetHashCode();
+            if (_keyCache.Get(hashcode, out var result))
             {
                 return result(ContainerScope);
-            }
+            }            
 
+            //loop registrations hoping we find a matching hashcode..
             foreach (var value in _registrations.Values)
             {
-                if (value.HashCode == key.GetHashCode())
+                if (value.HashCode == hashcode)
                 {
-                    var del = _dependencyResolver.CreateDelegate(value.RegisteredType);
-                    _dependencyResolver.KeyCache.Emplace(value.HashCode, del);
-                    return del(ContainerScope);
+                    var @delegate = _generator.Create(value.RegisteredType, _delegates);
+
+                    _keyCache.Emplace(value.HashCode, @delegate);
+                    return @delegate(ContainerScope);
                 }
             }
 
             return default;
         }
-
-        /// <summary>
-        /// Resolves all registered concrete classes
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        [MethodImpl(256)]
-        public IEnumerable<object> ResolveAll<T>() => _dependencyResolver.DelegateCache.GetAll(typeof(T)).Select(i => i(ContainerScope));
-
-        /// <summary>
-        /// Resolves all registered entries of type
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        [MethodImpl(256)]
-        public IEnumerable<object> ResolveAll(Type type) => _dependencyResolver.DelegateCache.GetAll(type).Select(i => i(ContainerScope));
 
         /// <summary>
         /// Creates the scope.
@@ -464,7 +454,6 @@ namespace Faster.Ioc
         {
             Dispose(true);
         }
-
 
         #endregion
     }

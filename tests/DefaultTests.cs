@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Faster.Ioc.Contracts;
 using Faster.Ioc.Tests.Data;
@@ -41,37 +42,37 @@ namespace Faster.Ioc.Tests
             using (var container = new Container())
             {
                 container.Register<IConcreteInterface, ConcreteA>(Lifetime.Singleton);
-
+            
                 var singleton1 = container.Resolve<IConcreteInterface>();
                 var singleton2 = container.Resolve<IConcreteInterface>();
 
                 Assert.IsTrue(singleton2 == singleton1);
             }
         }
-        
+
         [TestMethod]
-        public void AssertCreatingMultiple()
+        public void AssertCreatingMultipleAndReturnList()
         {
             using (var container = new Container())
             {
                 container.Register<IConcreteInterface>(() => new ConcreteA(), Lifetime.Singleton);
                 container.Register<IConcreteInterface>(() => new ConcreteB(), Lifetime.Singleton);
 
-                var items = container.ResolveAll<IConcreteInterface>().ToList();
+                var items = container.Resolve<IList<IConcreteInterface>>().ToList();
 
                 Assert.IsTrue(items.Count == 2);
             }
         }
 
         [TestMethod]
-        public void AssertCreatingMultipleWithoutDelegate()
+        public void AssertCreatingMultipleAndReturnIEnumerable()
         {
             using (var container = new Container())
             {
-                container.Register<IConcreteInterface, ConcreteA>(Lifetime.Singleton);
-                container.Register<IConcreteInterface, ConcreteB>(Lifetime.Singleton);
+                container.Register<IConcreteInterface>(() => new ConcreteA(), Lifetime.Singleton);
+                container.Register<IConcreteInterface>(() => new ConcreteB(), Lifetime.Singleton);
 
-                var items = container.ResolveAll<IConcreteInterface>().ToList();
+                var items = container.Resolve<IEnumerable<IConcreteInterface>>().ToList();
 
                 Assert.IsTrue(items.Count == 2);
             }
@@ -89,7 +90,7 @@ namespace Faster.Ioc.Tests
                 //param for concreteE
                 container.Register<ITestData, ConcreteD>(Lifetime.Singleton);
 
-                var items = container.ResolveAll<IConcreteInterface>().ToList();
+                var items = container.Resolve<IList<IConcreteInterface>>();
 
                 Assert.IsTrue(items.Count == 3);
             }
@@ -116,25 +117,6 @@ namespace Faster.Ioc.Tests
                 //Assert
                 Assert.IsTrue(items.ConcreteInterfaces.Count() == 2);
                 Assert.IsTrue(items.TestData != null);
-            }
-        }
-
-        [TestMethod]
-        public void AssertCreatingMultipleByType()
-        {
-            using (var container = new Container())
-            {
-                container.Register<IConcreteInterface>(() => new ConcreteA(), Lifetime.Singleton);
-                container.Register<IConcreteInterface>(() => new ConcreteB(), Lifetime.Singleton);
-
-                var items = container.ResolveAll(typeof(IConcreteInterface)).ToList();
-
-                foreach (var item in items)
-                {
-                    Assert.IsNotNull(item);
-                }
-
-                Assert.IsTrue(items.Count == 2);
             }
         }
 
@@ -225,7 +207,7 @@ namespace Faster.Ioc.Tests
                 Assert.IsNotNull(a);
             }
         }
-        
+
         [TestMethod]
         public void AssertResolvingObjectWithOneOfMoreParameters()
         {
@@ -237,5 +219,29 @@ namespace Faster.Ioc.Tests
                 Assert.IsNotNull(a);
             }
         }
+
+
+        [TestMethod]
+        public void AssertIISsue()
+        {
+            using (var container = new Container())
+            {
+                container.Register<IConcreteInterface, ConcreteA>(Lifetime.Singleton);
+                container.Register<ConcreteC, ConcreteC>(Lifetime.Singleton);
+                container.Register<ITestData, ConcreteD>(Lifetime.Singleton);
+                var a = container.Resolve<ConcreteC>();
+                Assert.IsNotNull(a);
+
+                var b = container.Resolve<ConcreteC>();
+                Assert.AreEqual(a, b);
+
+                Assert.AreEqual(a.Data, b.Data);
+                Assert.AreEqual(a.ConcreteType, b.ConcreteType);
+
+                var bb = container.Resolve<IConcreteInterface>();
+                var x = a.ConcreteType == bb;
+            }
+        }
+
     }
 }
