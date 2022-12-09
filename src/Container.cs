@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using Faster.Ioc.Collections;
 using Faster.Ioc.Contracts;
@@ -8,6 +6,8 @@ using Faster.Ioc.Extensions;
 using Faster.Map;
 using Microsoft.Extensions.DependencyInjection;
 using FastExpressionCompiler.LightExpression;
+using System.Collections.Generic;
+using Faster.Ioc.Comparer;
 
 namespace Faster.Ioc
 {
@@ -19,8 +19,7 @@ namespace Faster.Ioc
     {
         #region Fields
 
-        private MultiMap<Type, Registration> _registrations = new MultiMap<Type, Registration>(64);
-
+        private MultiMap<Type, Registration> _registrations;
         private readonly FastMap<int, Func<Scoped, object>> _keyCache = new FastMap<int, Func<Scoped, object>>();
         private readonly ExpressionGenerator _generator;
         private readonly HashMap _delegates;
@@ -40,12 +39,25 @@ namespace Faster.Ioc
         /// Initializes a new instance of the <see cref="Container"/> class.
         /// </summary>
         public Container()
-        {
+        {          
+            _registrations = new MultiMap<Type, Registration>(64, 0.5, EqualityComparer<Type>.Default, new RegistrationEqualityComparer());
             _generator = new ExpressionGenerator(_registrations);
             _delegates = new HashMap(64, 0.5, _generator);
             ContainerScope = new Scoped(this);
         }
- 
+
+        /// <summary>
+        /// Constructor used to create childcontrainers
+        /// </summary>
+        /// <param name="registrations"></param>
+        public Container(MultiMap<Type, Registration> registrations)
+        {
+            _registrations = registrations;
+            _generator = new ExpressionGenerator(_registrations);
+            _delegates = new HashMap(64, 0.6, _generator);
+            ContainerScope = new Scoped(this);
+        }
+
         #endregion
 
         #region Registration Methods
@@ -406,7 +418,7 @@ namespace Faster.Ioc
             if (_keyCache.Get(hashcode, out var result))
             {
                 return result(ContainerScope);
-            }            
+            }
 
             //loop registrations hoping we find a matching hashcode..
             foreach (var value in _registrations.Values)
@@ -428,10 +440,13 @@ namespace Faster.Ioc
         /// </summary>
         /// <returns></returns>
         [MethodImpl(256)]
-        public IServiceScope CreateScope()
-        {
-            return new Scoped(this);
-        }
+        public IServiceScope CreateScope() => new Scoped(this);
+     
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public IContainer CreateChildContainer() =>  new Container(_registrations);
 
         #endregion
 
@@ -441,8 +456,7 @@ namespace Faster.Ioc
             if (!_disposed)
             {
                 if (disposing)
-                {
-                    _registrations = null;
+                {                   
                     ContainerScope.Dispose();
                 }
 

@@ -58,10 +58,8 @@ namespace Faster.Ioc
                 Compile(reg, hashmap);
             }
 
-            // Compile main registrain
-            Compile(registration, hashmap);
-
-            return registration.Value;
+            // Compile main registation
+           return Compile(registration, hashmap);
         }
 
         #endregion
@@ -74,12 +72,17 @@ namespace Faster.Ioc
         /// <param name="reg"></param>
         /// <param name="hashmap"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private void Compile(Registration reg, HashMap hashmap)
+        private Func<Scoped, object> Compile(Registration reg, HashMap hashmap)
         {
             if (reg.Expression != null)
             {
                 //no need to process, already generated an expression
-                return;
+                var d = (Func<Scoped, object>)Expression.Lambda(reg.Expression, Scoped.ScopeParam).CompileFast();
+
+                //store delegate in cache
+                hashmap.Emplace(reg.RegisteredType, d);
+
+                return d;
             }
 
             //Determine if registration has overrides
@@ -93,13 +96,15 @@ namespace Faster.Ioc
             // Make sure object is disposed
             var dispose = AddCleanup(reg);
 
+
             //Generate delegate
             var @delegate = (Func<Scoped, object>)Expression.Lambda(dispose, Scoped.ScopeParam).CompileFast();
 
             //store delegate in cache
             hashmap.Emplace(reg.RegisteredType, @delegate);
 
-            reg.Value = @delegate;
+            //return delegate
+            return @delegate;
         }
 
         /// <summary>

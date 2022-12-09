@@ -1876,13 +1876,13 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "Faster.Ioc/1.0.0.3": {
+      "Faster.Ioc/1.0.0.4": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "FastExpressionCompiler": "3.3.3",
           "FastExpressionCompiler.LightExpression": "3.3.3",
-          "Faster.Map": "3.0.3.8",
+          "Faster.Map": "3.0.3.9",
           "Microsoft.Extensions.DependencyInjection": "5.0.2"
         },
         "compile": {
@@ -6463,7 +6463,7 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "Faster.Ioc/1.0.0.3": {
+    "Faster.Ioc/1.0.0.4": {
       "type": "project",
       "path": "../src/Faster.Ioc.csproj",
       "msbuildProject": "../src/Faster.Ioc.csproj"
@@ -6471,7 +6471,7 @@
   },
   "projectFileDependencyGroups": {
     "net5.0": [
-      "Faster.Ioc >= 1.0.0.3",
+      "Faster.Ioc >= 1.0.0.4",
       "Faster.Map >= 3.0.3.8",
       "MSTest.TestAdapter >= 2.2.3",
       "MSTest.TestFramework >= 2.2.3",
@@ -6487,11 +6487,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\wruiz\\source\\repos\\Faster.Ioc\\tests\\Faster.Ioc.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\tests\\Faster.Ioc.Tests.csproj",
       "projectName": "Faster.Ioc.Tests",
-      "projectPath": "C:\\Users\\wruiz\\source\\repos\\Faster.Ioc\\tests\\Faster.Ioc.Tests.csproj",
+      "projectPath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\tests\\Faster.Ioc.Tests.csproj",
       "packagesPath": "C:\\Users\\wruiz\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\wruiz\\source\\repos\\Faster.Ioc\\tests\\obj\\",
+      "outputPath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\tests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -6513,8 +6513,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\wruiz\\source\\repos\\Faster.Ioc\\src\\Faster.Ioc.csproj": {
-              "projectPath": "C:\\Users\\wruiz\\source\\repos\\Faster.Ioc\\src\\Faster.Ioc.csproj"
+            "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj": {
+              "projectPath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj"
             }
           }
         }
@@ -6573,5 +6573,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: Faster.Map from 3.0.3.9 to 3.0.3.8. Reference the package directly from the project to select a different version. \r\n Faster.Ioc.Tests -> Faster.Ioc -> Faster.Map (>= 3.0.3.9) \r\n Faster.Ioc.Tests -> Faster.Map (>= 3.0.3.8)",
+      "libraryId": "Faster.Map",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
 }
