@@ -44,7 +44,7 @@ var cow = container.Resolve<IAnimal>();
 var goose = container.Resolve("Goose");
 
 //Cow, Horse and Bull
-var animals = container.ResolveAll<IAnimal
+var animals = container.Resolve<IEnumerable<IAnimal>>()
 
 ```
 
