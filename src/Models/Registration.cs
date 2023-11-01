@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 using Faster.Ioc.Contracts;
 using Expression = FastExpressionCompiler.LightExpression.Expression;
 
-namespace Faster.Ioc
+namespace Faster.Ioc.Models
 {
     [System.Diagnostics.DebuggerDisplay("RegisteredType:{RegisteredType.Name}")]
-    public class Registration: ICloneable
+    public class Registration : ICloneable
     {
         #region Properties
 

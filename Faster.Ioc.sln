@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Faster.Ioc", "src\Faster.Io
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Faster.Ioc.Tests", "tests\Faster.Ioc.Tests.csproj", "{8A724153-86E7-46FC-B2D1-D15283B6A245}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IocPerformance", "..\IocPerformance-main\IocPerformance\IocPerformance.csproj", "{812A82D0-70F1-456B-9D53-C1B15A0AE7CD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{8A724153-86E7-46FC-B2D1-D15283B6A245}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A724153-86E7-46FC-B2D1-D15283B6A245}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A724153-86E7-46FC-B2D1-D15283B6A245}.Release|Any CPU.Build.0 = Release|Any CPU
-		{812A82D0-70F1-456B-9D53-C1B15A0AE7CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{812A82D0-70F1-456B-9D53-C1B15A0AE7CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{812A82D0-70F1-456B-9D53-C1B15A0AE7CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{812A82D0-70F1-456B-9D53-C1B15A0AE7CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

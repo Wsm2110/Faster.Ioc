@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "UrxhhK3mWZHQyrs2LVLrbqdCbZlLTeUYEXSdfKfObWSSdBOCNtxDPYc/C/hWJdyzQcUvoWmd99NRtEutgVcHjA==",
-  "success": false,
+  "dgSpecHash": "aAfLvnwYfpyBuDQsJP4O2unXPinxrJoCR3ZVx5KkTCCzt8eRD4zYjgDO2LeZiQstZnKtLV36rhJGiIEEb8TjXQ==",
+  "success": true,
   "projectFilePath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\tests\\Faster.Ioc.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\wruiz\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
-    "C:\\Users\\wruiz\\.nuget\\packages\\faster.map\\3.0.3.8\\faster.map.3.0.3.8.nupkg.sha512",
-    "C:\\Users\\wruiz\\.nuget\\packages\\fastexpressioncompiler\\3.3.3\\fastexpressioncompiler.3.3.3.nupkg.sha512",
-    "C:\\Users\\wruiz\\.nuget\\packages\\fastexpressioncompiler.lightexpression\\3.3.3\\fastexpressioncompiler.lightexpression.3.3.3.nupkg.sha512",
+    "C:\\Users\\wruiz\\.nuget\\packages\\faster.map\\5.0.2\\faster.map.5.0.2.nupkg.sha512",
+    "C:\\Users\\wruiz\\.nuget\\packages\\fastexpressioncompiler\\3.3.4\\fastexpressioncompiler.3.3.4.nupkg.sha512",
+    "C:\\Users\\wruiz\\.nuget\\packages\\fastexpressioncompiler.lightexpression\\3.3.4\\fastexpressioncompiler.lightexpression.3.3.4.nupkg.sha512",
     "C:\\Users\\wruiz\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
     "C:\\Users\\wruiz\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
     "C:\\Users\\wruiz\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
@@ -99,15 +99,5 @@
     "C:\\Users\\wruiz\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\wruiz\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1605",
-      "level": "Error",
-      "message": "Detected package downgrade: Faster.Map from 3.0.3.9 to 3.0.3.8. Reference the package directly from the project to select a different version. \r\n Faster.Ioc.Tests -> Faster.Ioc -> Faster.Map (>= 3.0.3.9) \r\n Faster.Ioc.Tests -> Faster.Map (>= 3.0.3.8)",
-      "libraryId": "Faster.Map",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    }
-  ]
+  "logs": []
 }

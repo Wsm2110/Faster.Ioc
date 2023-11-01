@@ -195,18 +195,7 @@ namespace Faster.Ioc.Tests
             }
         }
 
-        [TestMethod]
-        public void AssertRetrievalByKey()
-        {
-            using (var container = new Container())
-            {
-                container.Register<IConcreteInterface, ConcreteA>(Lifetime.Singleton, "ConcreteA");
 
-                var a = container.Resolve(nameof(ConcreteA));
-
-                Assert.IsNotNull(a);
-            }
-        }
 
         [TestMethod]
         public void AssertResolvingObjectWithOneOfMoreParameters()
@@ -222,7 +211,7 @@ namespace Faster.Ioc.Tests
 
 
         [TestMethod]
-        public void AssertIISsue()
+        public void AssertResolvingTypeWithMultipleParameters()
         {
             using (var container = new Container())
             {

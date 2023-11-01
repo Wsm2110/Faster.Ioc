@@ -9,15 +9,15 @@ using Faster.Ioc.Contracts;
 using FastExpressionCompiler.LightExpression;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Faster.Ioc
+namespace Faster.Ioc.Models
 {
     /// <summary>
     /// 
     /// </summary>
-    /// <seealso cref="Faster.Ioc.Contracts.IScoped" />
-    /// <seealso cref="Microsoft.Extensions.DependencyInjection.IServiceScope" />
-    /// <seealso cref="System.IServiceProvider" />
-    /// <seealso cref="System.IDisposable" />
+    /// <seealso cref="IScoped" />
+    /// <seealso cref="IServiceScope" />
+    /// <seealso cref="IServiceProvider" />
+    /// <seealso cref="IDisposable" />
     public sealed class Scoped : IScoped, IServiceProvider, IServiceScope
     {
         #region Statics
@@ -47,7 +47,7 @@ namespace Faster.Ioc
 
 
         #endregion
-        
+
         #region Fields
 
         private object[] _scopedInstances = new object[ScopeCount];
@@ -89,7 +89,7 @@ namespace Faster.Ioc
         }
 
         private static int _scopeCount;
-        
+
         /// <summary>
         /// Gets or sets the disposeables.
         /// </summary>

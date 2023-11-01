@@ -1,19 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net472;net5.0;net6.0</TargetFrameworks>
+    <ImplicitUsings>false</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <LangVersion>Latest</LangVersion>
     <Authors>Wiljan Ruizendaal</Authors>
-    <PackageReleaseNotes>minor performance changes</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      - Move to .net80
+    </PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/Wsm2110/Faster.Ioc</PackageProjectUrl>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>fastest-ioc-container, ioc, container, inversion of control </PackageTags>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
-    <Title>Minimalistic ioc container with incredible speed</Title>
-    <Version>1.0.0.4</Version>
+    <AssemblyVersion>5.0.0</AssemblyVersion>
+    <FileVersion>5.0.0</FileVersion>
+    <Title>Ioc container with mindblowing performance</Title>
+    <Version>5.0.0</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description></Description>
+    <RepositoryUrl>https://github.com/Wsm2110/Faster.Ioc</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>fastest-ioc-container, ioc, container, inversion of control, simd</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,9 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Faster.Map" Version="3.0.3.9" />
-    <PackageReference Include="FastExpressionCompiler" Version="3.3.3" />
-    <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.3" />
+    <PackageReference Include="Faster.Map" Version="5.0.2" />
+    <PackageReference Include="FastExpressionCompiler" Version="3.3.4" />
+    <PackageReference Include="FastExpressionCompiler.LightExpression" Version="3.3.4" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
   </ItemGroup>
 

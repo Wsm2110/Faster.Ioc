@@ -1,23 +1,23 @@
 {
   "version": 3,
   "targets": {
-    "net5.0": {
+    "net8.0": {
       "coverlet.collector/3.0.2": {
         "type": "package",
         "build": {
           "build/netstandard1.0/coverlet.collector.targets": {}
         }
       },
-      "Faster.Map/3.0.3.8": {
+      "Faster.Map/5.0.2": {
         "type": "package",
         "compile": {
-          "lib/net5.0/Faster.Map.dll": {}
+          "lib/net8.0/Faster.Map.dll": {}
         },
         "runtime": {
-          "lib/net5.0/Faster.Map.dll": {}
+          "lib/net8.0/Faster.Map.dll": {}
         }
       },
-      "FastExpressionCompiler/3.3.3": {
+      "FastExpressionCompiler/3.3.4": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/FastExpressionCompiler.dll": {
@@ -30,7 +30,7 @@
           }
         }
       },
-      "FastExpressionCompiler.LightExpression/3.3.3": {
+      "FastExpressionCompiler.LightExpression/3.3.4": {
         "type": "package",
         "compile": {
           "lib/netstandard2.1/FastExpressionCompiler.LightExpression.dll": {
@@ -92,12 +92,12 @@
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         },
         "compile": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.dll": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {
             "related": ".xml"
           }
         },
@@ -108,12 +108,12 @@
       "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "related": ".xml"
           }
         },
@@ -1391,12 +1391,12 @@
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {
         "type": "package",
         "compile": {
-          "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll": {
+          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll": {
+          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
             "related": ".xml"
           }
         },
@@ -1876,13 +1876,13 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "Faster.Ioc/1.0.0.4": {
+      "Faster.Ioc/5.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v5.0",
+        "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "FastExpressionCompiler": "3.3.3",
-          "FastExpressionCompiler.LightExpression": "3.3.3",
-          "Faster.Map": "3.0.3.9",
+          "FastExpressionCompiler": "3.3.4",
+          "FastExpressionCompiler.LightExpression": "3.3.4",
+          "Faster.Map": "5.0.2",
           "Microsoft.Extensions.DependencyInjection": "5.0.2"
         },
         "compile": {
@@ -1946,29 +1946,29 @@
         "coverlet.collector.nuspec"
       ]
     },
-    "Faster.Map/3.0.3.8": {
-      "sha512": "GV+0oUf/Z/L4CvZYGFc9UcArKn63R2zsgrcGdTOnd0G+NN6rVRxQIgudhK68nh5SKqo7gHF71b17tnn8Nh7Zaw==",
+    "Faster.Map/5.0.2": {
+      "sha512": "FNwxnqHKZwEP+UdALhgI5W+cc3QMlixDSaVuTPkG/6egd/e+l2tEitqi9y03nYcHKGU7S9FHBb5hZqc1iyhhMQ==",
       "type": "package",
-      "path": "faster.map/3.0.3.8",
+      "path": "faster.map/5.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
-        "faster.map.3.0.3.8.nupkg.sha512",
+        "README.md",
+        "faster.map.5.0.2.nupkg.sha512",
         "faster.map.nuspec",
-        "lib/net40/Faster.Map.dll",
-        "lib/net5.0/Faster.Map.dll"
+        "lib/net8.0/Faster.Map.dll"
       ]
     },
-    "FastExpressionCompiler/3.3.3": {
-      "sha512": "h8hO1RguVsJpDykCaJl4JiGHPlxfeLGWWFopQm7X4RkfQG4AU8o1mQsFG0W4d+b+AhrtAfhI341QtiXdWZAYXw==",
+    "FastExpressionCompiler/3.3.4": {
+      "sha512": "gOGFxybUK0SQJ6TIV0YubqRfTSL2PGaoW1C7epcT76/tpufhXUGqLW0fP/PKDmhWhCS0YcnbCCFZMn3claa7ng==",
       "type": "package",
-      "path": "fastexpressioncompiler/3.3.3",
+      "path": "fastexpressioncompiler/3.3.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "FastExpressionCompiler.snk",
         "LICENSE/LICENSE",
-        "fastexpressioncompiler.3.3.3.nupkg.sha512",
+        "fastexpressioncompiler.3.3.4.nupkg.sha512",
         "fastexpressioncompiler.nuspec",
         "lib/net45/FastExpressionCompiler.dll",
         "lib/net45/FastExpressionCompiler.xml",
@@ -1979,16 +1979,16 @@
         "logo.png"
       ]
     },
-    "FastExpressionCompiler.LightExpression/3.3.3": {
-      "sha512": "HlwHJQfL5aRLMQRcSVxaAyZ/9IXnvc/qFD508/9zx0QmGcH8ls3Fh8aItNak0CuHlU6CfBpVZjx5IHR73FMdMw==",
+    "FastExpressionCompiler.LightExpression/3.3.4": {
+      "sha512": "N6utLNS9771nVfCtRpvwMhehMtcd31p4Njn/QAUWAE0wMpzk4+z9cZlnUAWXnKJ/ugO74z3QRiG0y5HQ2uDChg==",
       "type": "package",
-      "path": "fastexpressioncompiler.lightexpression/3.3.3",
+      "path": "fastexpressioncompiler.lightexpression/3.3.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "FastExpressionCompiler.snk",
         "LICENSE/LICENSE",
-        "fastexpressioncompiler.lightexpression.3.3.3.nupkg.sha512",
+        "fastexpressioncompiler.lightexpression.3.3.4.nupkg.sha512",
         "fastexpressioncompiler.lightexpression.nuspec",
         "lib/net45/FastExpressionCompiler.LightExpression.dll",
         "lib/net45/FastExpressionCompiler.LightExpression.xml",
@@ -6463,16 +6463,15 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "Faster.Ioc/1.0.0.4": {
+    "Faster.Ioc/5.0.0": {
       "type": "project",
       "path": "../src/Faster.Ioc.csproj",
       "msbuildProject": "../src/Faster.Ioc.csproj"
     }
   },
   "projectFileDependencyGroups": {
-    "net5.0": [
-      "Faster.Ioc >= 1.0.0.4",
-      "Faster.Map >= 3.0.3.8",
+    "net8.0": [
+      "Faster.Ioc >= 5.0.0",
       "MSTest.TestAdapter >= 2.2.3",
       "MSTest.TestFramework >= 2.2.3",
       "Microsoft.Extensions.DependencyInjection >= 6.0.0",
@@ -6502,7 +6501,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net5.0"
+        "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -6510,8 +6509,8 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {
             "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj": {
               "projectPath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj"
@@ -6526,13 +6525,9 @@
       }
     },
     "frameworks": {
-      "net5.0": {
-        "targetAlias": "net5.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
-          "Faster.Map": {
-            "target": "Package",
-            "version": "[3.0.3.8, )"
-          },
           "MSTest.TestAdapter": {
             "target": "Package",
             "version": "[2.2.3, )"
@@ -6570,19 +6565,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.1.23463.5/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1605",
-      "level": "Error",
-      "message": "Detected package downgrade: Faster.Map from 3.0.3.9 to 3.0.3.8. Reference the package directly from the project to select a different version. \r\n Faster.Ioc.Tests -> Faster.Ioc -> Faster.Map (>= 3.0.3.9) \r\n Faster.Ioc.Tests -> Faster.Map (>= 3.0.3.8)",
-      "libraryId": "Faster.Map",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    }
-  ]
+  }
 }

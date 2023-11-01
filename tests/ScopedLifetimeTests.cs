@@ -1,5 +1,6 @@
 ﻿using System;
 using Faster.Ioc.Contracts;
+using Faster.Ioc.Models;
 using Faster.Ioc.Tests.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

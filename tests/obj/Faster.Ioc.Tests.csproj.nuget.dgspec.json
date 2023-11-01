@@ -5,7 +5,7 @@
   },
   "projects": {
     "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj": {
-      "version": "1.0.0.4",
+      "version": "5.0.0",
       "restore": {
         "projectUniqueName": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj",
         "projectName": "Faster.Ioc",
@@ -23,10 +23,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net472",
-          "net48",
-          "net5.0",
-          "net6.0"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -34,20 +31,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
-            "projectReferences": {}
-          },
-          "net6.0": {
-            "targetAlias": "net6.0",
-            "projectReferences": {}
-          },
-          "net472": {
-            "targetAlias": "net472",
-            "projectReferences": {}
-          },
-          "net48": {
-            "targetAlias": "net48",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -58,20 +43,20 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "FastExpressionCompiler": {
               "target": "Package",
-              "version": "[3.3.3, )"
+              "version": "[3.3.4, )"
             },
             "FastExpressionCompiler.LightExpression": {
               "target": "Package",
-              "version": "[3.3.3, )"
+              "version": "[3.3.4, )"
             },
             "Faster.Map": {
               "target": "Package",
-              "version": "[3.0.3.9, )"
+              "version": "[5.0.2, )"
             },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
@@ -94,89 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        },
-        "net6.0": {
-          "targetAlias": "net6.0",
-          "dependencies": {
-            "FastExpressionCompiler": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "FastExpressionCompiler.LightExpression": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "Faster.Map": {
-              "target": "Package",
-              "version": "[3.0.3.9, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[5.0.2, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        },
-        "net472": {
-          "targetAlias": "net472",
-          "dependencies": {
-            "FastExpressionCompiler": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "FastExpressionCompiler.LightExpression": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "Faster.Map": {
-              "target": "Package",
-              "version": "[3.0.3.9, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[5.0.2, )"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
-        },
-        "net48": {
-          "targetAlias": "net48",
-          "dependencies": {
-            "FastExpressionCompiler": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "FastExpressionCompiler.LightExpression": {
-              "target": "Package",
-              "version": "[3.3.3, )"
-            },
-            "Faster.Map": {
-              "target": "Package",
-              "version": "[3.0.3.9, )"
-            },
-            "Microsoft.Extensions.DependencyInjection": {
-              "target": "Package",
-              "version": "[5.0.2, )"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.1.23463.5/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -198,7 +101,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0"
+          "net8.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -206,8 +109,8 @@
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0": {
-            "targetAlias": "net5.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {
               "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj": {
                 "projectPath": "C:\\Users\\wruiz\\Desktop\\Develop\\Faster.Ioc\\src\\Faster.Ioc.csproj"
@@ -222,13 +125,9 @@
         }
       },
       "frameworks": {
-        "net5.0": {
-          "targetAlias": "net5.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
-            "Faster.Map": {
-              "target": "Package",
-              "version": "[3.0.3.8, )"
-            },
             "MSTest.TestAdapter": {
               "target": "Package",
               "version": "[2.2.3, )"
@@ -266,7 +165,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.1.23463.5/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

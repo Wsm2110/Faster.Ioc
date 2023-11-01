@@ -10,7 +10,7 @@ namespace Faster.Ioc.Collections
     /// </summary>
     [DebuggerDisplay("{Type?.Name}")]
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    internal struct Entry
+    internal struct Entry<TKey, TValue>
     {
         /// <summary>
         /// Gets or sets the key.
@@ -18,7 +18,7 @@ namespace Faster.Ioc.Collections
         /// <type>
         /// The key.
         /// </type>
-        public Type Type { get; set; }
+        public TKey Key;
 
         /// <summary>
         /// Gets or sets the delegate.
@@ -26,7 +26,7 @@ namespace Faster.Ioc.Collections
         /// <type>
         /// The type.
         /// </type>
-        public Func<Scoped, object> Value;
+        public TValue Value;
 
     }
 }

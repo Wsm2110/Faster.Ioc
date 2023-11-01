@@ -1,35 +1,82 @@
-﻿using Faster.Map;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using FastExpressionCompiler.LightExpression;
 using Faster.Ioc.Contracts;
+using System.Numerics;
+using System.Runtime.Intrinsics;
+using System.Runtime.InteropServices;
 using Faster.Ioc.Collections;
+using Faster.Ioc.Models;
 
-namespace Faster.Ioc
+namespace Faster.Ioc.Factory
 {
     /// <summary>
     /// Generate expression based on given paramRegistrations and lifetime settings
     /// </summary>
-    internal class ExpressionGenerator : IExpressionGenerator
+    internal class ExpressionFactory : IExpressionFactory
     {
-        #region Fields
-
-        private readonly MultiMap<Type, Registration> _registrations;
+        #region Properties
+        public double Count { get; private set; }
 
         #endregion
 
-        #region Constructor
+        #region Fields
+
+        private RegistrationFactory _regFactory;
+
+        private const sbyte _emptyBucket = -127;
+        private const sbyte _tombstone = -126;
+
+        private static readonly Vector128<sbyte> _emptyBucketVector = Vector128.Create(_emptyBucket);
+
+        private sbyte[] _metadata;
+        private Entry<Type, Func<Scoped, object>>[] _entries;
+
+        private const uint GoldenRatio = 0x9E3779B9; //2654435769;
+        private uint _length;
+
+        private byte _shift = 32;
+        private double _maxLookupsBeforeResize;
+        private uint _lengthMinusOne;
+        private readonly double _loadFactor;
+        private readonly IEqualityComparer<Type> _comparer;
+
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="registrations"></param>
-        public ExpressionGenerator(MultiMap<Type, Registration> registrations)
+        /// <param name="reg"></param>
+        /// <param name="delegates"></param>
+        public ExpressionFactory(RegistrationFactory reg)
         {
-            _registrations = registrations;
+            _regFactory = reg;
+
+            if (!Vector128.IsHardwareAccelerated)
+            {
+                throw new NotSupportedException("Your hardware does not support acceleration for 128 bit vectors");
+            }
+
+            //default length is 16
+            _length = 16;
+            _loadFactor = 0.5;
+            _maxLookupsBeforeResize = (uint)(_length * _loadFactor);
+            _comparer = EqualityComparer<Type>.Default;
+            _shift = (byte)(_shift - BitOperations.Log2(_length));
+
+            _entries = new Entry<Type, Func<Scoped, object>>[_length + 16];
+            _metadata = new sbyte[_length + 16];
+
+            //fill metadata with emptybucket info
+            Array.Fill(_metadata, _emptyBucket);
+
+            _lengthMinusOne = _length - 1;
         }
 
         #endregion
@@ -37,11 +84,78 @@ namespace Faster.Ioc
         #region Methods
 
         /// <summary>
+        /// Tries to find the key in the map
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>Returns false if the key is not found</returns>       
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Func<Scoped, object> Get(Type key)
+        {
+            // Get object identity hashcode
+            var hashcode = (uint)key.GetHashCode();
+            // Objectidentity hashcode * golden ratio (fibonnachi hashing) followed by a shift
+            uint index = hashcode * GoldenRatio >> _shift;
+            // GEt 7 low bits
+            var h2 = H2(hashcode);
+            //Create vector of the 7 low bits
+            var target = Vector128.Create(Unsafe.As<uint, sbyte>(ref h2));
+            //Set initial jumpdistance index
+            uint jumpDistance = 0;
+
+            while (true)
+            {
+                //load vector @ index
+                var source = Vector128.LoadUnsafe(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_metadata), index));
+                //get a bit sequence for matched hashcodes (h2s)
+                var mask = Vector128.Equals(target, source).ExtractMostSignificantBits();
+                //Could be multiple bits which are set
+                while (mask > 0)
+                {
+                    //Retrieve offset 
+                    var bitPos = BitOperations.TrailingZeroCount(mask);
+                    //Get index and eq
+                    var entry = Find(_entries, index + Unsafe.As<int, byte>(ref bitPos));
+                    //Use EqualityComparer to find proper entry
+                    if (_comparer.Equals(entry.Key, key))
+                    {
+                        return entry.Value;
+                    }
+
+                    //clear bit
+                    mask = ResetLowestSetBit(mask);
+                }
+
+                //Contains empty buckets    
+                if (Vector128.Equals(source, _emptyBucketVector).ExtractMostSignificantBits() > 0)
+                {
+                    goto generate;
+                }
+
+                //Probing is done by incrementing the currentEntry bucket by a triangularly increasing multiple of Groups:jump by 1 more group every time.
+                //So first we jump by 1 group (meaning we just continue our linear scan), then 2 groups (skipping over 1 group), then 3 groups (skipping over 2 groups), and so on.
+                //Interestingly, this pattern perfectly lines up with our power-of-two size such that we will visit every single bucket exactly once without any repeats(searching is therefore guaranteed to terminate as we always have at least one EMPTY bucket).
+                //Also note that our non-linear probing strategy makes us fairly robust against weird degenerate collision chains that can make us accidentally quadratic(Hash DoS).
+                //Also note that we expect to almost never actually probe, since that’s WIDTH(16) non-EMPTY buckets we need to fail to find our key in.
+                jumpDistance += 16;
+                index += jumpDistance;
+                index = index & _lengthMinusOne;
+            }
+
+            generate:
+            return Create(key);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
         /// Resolve all param expressions in reverse order and compile into a delegate
         /// </summary>
         /// <param name="registration">The registration.</param>
         /// <returns></returns> 
-        public Func<Scoped, object> Create(Type type, HashMap hashmap)
+        private Func<Scoped, object> Create(Type type)
         {
             //detect circular references
             var crs = new CircularReference();
@@ -55,16 +169,190 @@ namespace Faster.Ioc
             foreach (var reg in paramRegistrations)
             {
                 //Compile param expressions
-                Compile(reg, hashmap);
+                Compile(reg);
             }
 
             // Compile main registation
-           return Compile(registration, hashmap);
+            return Compile(registration);
         }
 
-        #endregion
+        /// <summary>
+        /// 
+        /// Inserts a key and value in the hashmap
+        ///
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>returns false if key already exists</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool Emplace(Type key, Func<Scoped, object> value)
+        {
+            //Resize if loadfactor is reached
+            if (Count >= _maxLookupsBeforeResize)
+            {
+                Resize();
+            }
 
-        #region Private methods
+            // Get object identity hashcode
+            var hashcode = (uint)key.GetHashCode();
+            // GEt 7 low bits
+            var h2 = H2(hashcode);
+            //Create vector of the 7 low bits
+            var target = Vector128.Create(Unsafe.As<uint, sbyte>(ref h2));
+            // Objectidentity hashcode * golden ratio (fibonnachi hashing) followed by a shift
+            uint index = hashcode * GoldenRatio >> _shift;
+            //Set initial jumpdistance index
+            uint jumpDistance = 0;
+
+            while (true)
+            {
+                //Load vector @ index
+                var source = Vector128.LoadUnsafe(ref Find(_metadata, index));
+                //Get a bit sequence for matched hashcodes (h2s)
+                var mask = Vector128.Equals(source, target).ExtractMostSignificantBits();
+                //Check if key is unique
+                while (mask != 0)
+                {
+                    var bitPos = BitOperations.TrailingZeroCount(mask);
+                    var entry = Find(_entries, index + Unsafe.As<int, uint>(ref bitPos));
+
+                    if (_comparer.Equals(entry.Key, key))
+                    {
+                        //duplicate key found
+                        return false;
+                    }
+
+                    //clear bit
+                    mask = ResetLowestSetBit(mask);
+                }
+
+                mask = source.ExtractMostSignificantBits();
+                //check for tombstones and empty entries 
+                if (mask != 0)
+                {
+                    var BitPos = BitOperations.TrailingZeroCount(mask);
+                    //calculate proper index
+                    index += Unsafe.As<int, uint>(ref BitPos);
+
+                    Find(_metadata, index) = Unsafe.As<uint, sbyte>(ref h2);
+
+                    //retrieve entry
+                    ref var currentEntry = ref Find(_entries, index);
+
+                    //set key and value
+                    currentEntry.Key = key;
+                    currentEntry.Value = value;
+
+                    ++Count;
+                    return true;
+                }
+
+                //Probing is done by incrementing the currentEntry bucket by a triangularly increasing multiple of Groups:jump by 1 more group every time.
+                //So first we jump by 1 group (meaning we just continue our linear scan), then 2 groups (skipping over 1 group), then 3 groups (skipping over 2 groups), and so on.
+                //Interestingly, this pattern perfectly lines up with our power-of-two size such that we will visit every single bucket exactly once without any repeats(searching is therefore guaranteed to terminate as we always have at least one EMPTY bucket).
+                //Also note that our non-linear probing strategy makes us fairly robust against weird degenerate collision chains that can make us accidentally quadratic(Hash DoS).
+                //Also note that we expect to almost never actually probe, since that’s WIDTH(16) non-EMPTY buckets we need to fail to find our key in.
+                jumpDistance += 16;
+                index += jumpDistance;
+                index = index & _length - 1;
+            }
+        }
+
+        private IEnumerable<Func<Scoped, object>> GetAll(Type key)
+        {
+            return Enumerable.Empty<Func<Scoped, object>>();
+        }
+
+        /// <summary>
+        /// Resizes this instance.
+        /// </summary>     
+        private void Resize()
+        {
+            _shift--;
+
+            //next power of 2
+            _length = _length * 2;
+            _lengthMinusOne = _length - 1;
+            _maxLookupsBeforeResize = _length * _loadFactor;
+
+            var oldEntries = _entries;
+            var oldMetadata = _metadata;
+
+            var size = Unsafe.As<uint, int>(ref _length) + 16;
+
+            _metadata = GC.AllocateArray<sbyte>(size);
+            _entries = GC.AllocateUninitializedArray<Entry<Type, Func<Scoped, object>>>(size);
+
+            _metadata.AsSpan().Fill(_emptyBucket);
+
+            for (uint i = 0; i < oldEntries.Length; ++i)
+            {
+                var h2 = Find(oldMetadata, i);
+                if (h2 < 0)
+                {
+                    continue;
+                }
+
+                var entry = Find(oldEntries, i);
+
+                //expensive if hashcode is slow, or when it`s not cached like strings
+                var hashcode = (uint)entry.Key.GetHashCode();
+                //calculate index by using object identity * fibonaci followed by a shift
+                uint index = hashcode * GoldenRatio >> _shift;
+                //Set initial jumpdistance index
+                uint jumpDistance = 0;
+
+                while (true)
+                {
+                    //check for empty entries
+                    var mask = Vector128.LoadUnsafe(ref Find(_metadata, index)).ExtractMostSignificantBits();
+                    if (mask != 0)
+                    {
+                        var BitPos = BitOperations.TrailingZeroCount(mask);
+
+                        index += Unsafe.As<int, uint>(ref BitPos);
+
+                        Find(_metadata, index) = h2;
+                        Find(_entries, index) = entry;
+                        break;
+                    }
+
+                    jumpDistance += 16;
+                    index += jumpDistance;
+                    index = index & _lengthMinusOne;
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ref T Find<T>(T[] array, uint index)
+        {
+#if DEBUG
+            return ref array[index];
+#else
+            ref var arr0 = ref MemoryMarshal.GetArrayDataReference(array);
+            return ref Unsafe.Add(ref arr0, index);
+#endif
+        }
+
+        /// <summary>
+        /// Reset the lowest significant bit in the given value
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static uint ResetLowestSetBit(uint value)
+        {
+            // It's lowered to BLSR on x86
+            return value & value - 1;
+        }
+
+        /// <summary>
+        /// Retrieve 7 low bits from hashcode
+        /// </summary>
+        /// <param name="hashcode"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static uint H2(uint hashcode) => hashcode & 0b01111111;
+
 
         /// <summary>
         /// Starts a chain of events which leads to an expression and delegate
@@ -72,7 +360,7 @@ namespace Faster.Ioc
         /// <param name="reg"></param>
         /// <param name="hashmap"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Func<Scoped, object> Compile(Registration reg, HashMap hashmap)
+        private Func<Scoped, object> Compile(Registration reg)
         {
             if (reg.Expression != null)
             {
@@ -80,7 +368,7 @@ namespace Faster.Ioc
                 var d = (Func<Scoped, object>)Expression.Lambda(reg.Expression, Scoped.ScopeParam).CompileFast();
 
                 //store delegate in cache
-                hashmap.Emplace(reg.RegisteredType, d);
+                Emplace(reg.RegisteredType, d);
 
                 return d;
             }
@@ -89,19 +377,18 @@ namespace Faster.Ioc
             var @base = reg.OverrideExpression != null
                 ? CreateBaseExpressionWithOverride(reg)
                 : CreateBaseExpression(reg);
-                   
+
             //appy lifetime effect
             reg.Expression = CreateLifetimeExpression(reg, @base);
 
             // Make sure object is disposed
             var dispose = AddCleanup(reg);
 
-
             //Generate delegate
             var @delegate = (Func<Scoped, object>)Expression.Lambda(dispose, Scoped.ScopeParam).CompileFast();
 
             //store delegate in cache
-            hashmap.Emplace(reg.RegisteredType, @delegate);
+            Emplace(reg.RegisteredType, @delegate);
 
             //return delegate
             return @delegate;
@@ -139,7 +426,7 @@ namespace Faster.Ioc
             {
                 var parameter = parameters[i];
                 var arg = args[i];
-                var entries = _registrations.GetAll(parameter.ParameterType);
+                var entries = _regFactory.GetAll(parameter.ParameterType);
 
                 foreach (var e in entries)
                 {
@@ -187,13 +474,14 @@ namespace Faster.Ioc
                 if (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IEnumerable<>) ||
                     type.GetGenericTypeDefinition() == typeof(IList<>)))
                 {
-                    var list = _registrations.GetAll(type.GetGenericArguments()[0]).Select(r => r.Expression);
+                    var list = _regFactory.GetAll(type.GetGenericArguments()[0]).Select(r => r.Expression);
 
                     yield return Expression.NewArrayInit(type.GetGenericArguments()[0], list);
                     continue;
                 }
 
-                if (_registrations.Get(type, out var registration))
+                var registration = _regFactory.Get(type);
+                if (registration != null)
                 {
                     if (registration.Expression == null)
                     {
@@ -229,7 +517,8 @@ namespace Faster.Ioc
                 if (type.IsGenericType)
                 {
                     //if there is an open generic registration, create new closed generic registration
-                    if (_registrations.Get(type.GetGenericTypeDefinition(), out var openGenericRegistration))
+                    var openGenericRegistration = _regFactory.Get(type.GetGenericTypeDefinition());
+                    if (openGenericRegistration != null)
                     {
                         var arguments = type.GetGenericArguments();
 
@@ -240,7 +529,7 @@ namespace Faster.Ioc
                         var reg = new Registration(openGenericRegistration.RegisteredType.MakeGenericType(arguments), returnType, openGenericRegistration.Lifetime);
 
                         //create new closed generic registration - wont harm if there duplicates, wont get saved
-                        _registrations.Emplace(type, reg);
+                        _regFactory.Emplace(type, reg);
 
                         //get param registrations
                         foreach (var item in GetParameterRegistrations(reg, circularReferenceService))
@@ -254,8 +543,8 @@ namespace Faster.Ioc
                     }
                 }
 
-                foreach (var reg in _registrations.GetAll(type))
-                {                  
+                foreach (var reg in _regFactory.GetAll(type))
+                {
                     //Get param registrations
                     foreach (var item in GetParameterRegistrations(reg, circularReferenceService))
                     {
@@ -335,7 +624,8 @@ namespace Faster.Ioc
 
         private Registration GetRegistration(Type type)
         {
-            if (_registrations.Get(type, out var registration))
+            var registration = _regFactory.Get(type);
+            if (registration != null)
             {
                 return registration;
             }
@@ -347,7 +637,7 @@ namespace Faster.Ioc
                 var IenumerableRegistration = new Registration(type, typeof(List<>).MakeGenericType(type.GenericTypeArguments));
 
                 //store closed generic Registration
-                _registrations.Emplace(type, IenumerableRegistration);
+                _regFactory.Emplace(type, IenumerableRegistration);
 
                 //return closed generic
                 return IenumerableRegistration;
@@ -357,13 +647,14 @@ namespace Faster.Ioc
             if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
                 //retrieve openGeneric registration
-                if (_registrations.Get(type.GetGenericTypeDefinition(), out var openGenericRegistration))
+                var openGenericRegistration = _regFactory.Get(type.GetGenericTypeDefinition());
+                if (openGenericRegistration != null)
                 {
                     //create closed generic reg
                     var closedGenericRegistration = new Registration(type, openGenericRegistration.ReturnType.MakeGenericType(type.GenericTypeArguments), openGenericRegistration.Lifetime);
 
                     //store closed generic Registration
-                    _registrations.Emplace(type, closedGenericRegistration);
+                    _regFactory.Emplace(type, closedGenericRegistration);
 
                     //return closed generic
                     return closedGenericRegistration;
@@ -389,7 +680,7 @@ namespace Faster.Ioc
             }
 
             if (reg.Lifetime == Lifetime.Singleton)
-            { 
+            {
                 var @delegate = Expression.Lambda(expression).CompileFast<Func<object>>();
                 //Create instance of compiled delegate
                 var instance = @delegate();

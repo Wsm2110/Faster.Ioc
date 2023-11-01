@@ -2,7 +2,7 @@
 using Faster.Ioc.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Faster.Ioc
+namespace Faster.Ioc.Factory
 {
     public class ScopeFactory : IServiceScopeFactory
     {
